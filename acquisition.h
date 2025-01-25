@@ -4,12 +4,17 @@
 #include <QObject>
 #include <QProcess>
 
+typedef enum {
+    NO_ERROR,
+    PYTHON_ERROR
+} acq_error_t;
+
 class Acquisition : public QObject
 {
     Q_OBJECT
 public:
     explicit Acquisition(QObject *parent = nullptr);
-    int start();
+    acq_error_t start();
     void read_temperature();
 
 signals:

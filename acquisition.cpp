@@ -12,22 +12,22 @@ Acquisition::Acquisition(QObject *parent)
     connect(m_acquisitionProcess, &QProcess::readyReadStandardOutput, this, &Acquisition::read_temperature);
 }
 
-int Acquisition::start()
+acq_error_t Acquisition::start()
 {
-
     m_acquisitionProcess->start("python3", QStringList() << m_scriptPath);
 
     if (!m_acquisitionProcess->waitForStarted()) {
-        return 1;
+        return PYTHON_ERROR;
     }
-    return 0;
+    return NO_ERROR;
 }
 
 void Acquisition::read_temperature()
 {
     // Read the output from the Python script
     QString output = m_acquisitionProcess->readAllStandardOutput();
-    qDebug() << output << '\n';
+    //qDebug() << output << '\n';
 
+    // Notify UI that temperature was acquired
     emit value_updated(output);
 }

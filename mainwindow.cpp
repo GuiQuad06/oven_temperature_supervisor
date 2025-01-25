@@ -32,6 +32,7 @@ void MainWindow::init_timer()
     m_listInterval = QStringList() << "120" << "90" << "60" << "30" << "10" << "1";
     ui->comboBox_refreshTime->addItems(m_listInterval);
 
+    // Bydefault, refresh every 2 minutes
     m_refreshTime = 120;
 
     timer = new QTimer(this);
@@ -47,7 +48,7 @@ void MainWindow::action_quitter()
 void MainWindow::update_refresh()
 {
     m_refreshTime = ui->comboBox_refreshTime->currentText().toInt();
-    qDebug() << m_refreshTime * 1000 << "milli-secondes \n";
+    //qDebug() << m_refreshTime * 1000 << "milli-secondes \n";
 
     timer->stop();
     timer->start(m_refreshTime * 1000);
