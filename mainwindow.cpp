@@ -3,10 +3,10 @@
 
 #include <QDebug>
 
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , m_tempReader(new Acquisition)
 {
     ui->setupUi(this);
 
@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionQuitter, SIGNAL(triggered()), this, SLOT(action_quitter()));
     connect(ui->comboBox_refreshTime, SIGNAL(currentTextChanged(QString)), this, SLOT(update_refresh()));
     connect(ui->checkBox_activerAlerte, SIGNAL(toggled(bool)), this, SLOT(handle_alarm_activation()));
+    connect(m_tempReader, &Acquisition::value_updated, this, &MainWindow::update_temperature);
 }
 
 MainWindow::~MainWindow()
@@ -64,7 +65,13 @@ void MainWindow::handle_alarm_activation()
 
 void MainWindow::timeout_handler()
 {
-    // Step 1: Call le sub process Python pour lire la temperature
-    // Step 2: Refresh le label en printant la sortie du script de mesure de temp
-    // Step 3: Si Alerte activee, comparer et actualiser progres bar + goNogo status
+    // Step 1: Call le sub process Python pour lire la temperature, refresh label
+    m_tempReader->start();
+
+    // Step 2: Si Alerte activee, comparer et actualiser progres bar + goNogo status
+}
+
+void MainWindow::update_temperature(const QString &value)
+{
+    ui->label_temperature->setText(value + "deg C");
 }

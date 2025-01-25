@@ -1,7 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "acquisition.h"
 #include <QMainWindow>
+#include <QProcess>
 #include <QStringList>
 #include <QTimer>
 
@@ -26,6 +28,9 @@ public:
     void init_timer();
     void timeout_handler();
 
+public slots:
+    void update_temperature(const QString &value);
+
 private slots:
     void action_quitter();
     void update_refresh();
@@ -40,5 +45,7 @@ private:
     int m_tempAlarm;
 
     k_alarmMode m_alarmMode;
+
+    Acquisition *m_tempReader;
 };
 #endif // MAINWINDOW_H
