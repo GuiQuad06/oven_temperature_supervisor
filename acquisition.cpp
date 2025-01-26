@@ -14,7 +14,7 @@ Acquisition::Acquisition(QObject *parent)
 
 acq_error_t Acquisition::start()
 {
-    m_acquisitionProcess->start("python3", QStringList() << m_scriptPath);
+    m_acquisitionProcess->start("python", QStringList() << m_scriptPath);
 
     if (!m_acquisitionProcess->waitForStarted()) {
         return PYTHON_ERROR;
