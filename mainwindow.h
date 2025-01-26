@@ -3,7 +3,6 @@
 
 #include "acquisition.h"
 #include <QMainWindow>
-#include <QProcess>
 #include <QStringList>
 #include <QTimer>
 
