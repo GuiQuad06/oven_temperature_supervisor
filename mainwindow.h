@@ -38,7 +38,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    QTimer *timer;
+    QTimer *m_timer;
     QStringList m_listInterval;
     int m_refreshTime;
     int m_tempAlarm;

@@ -24,6 +24,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    delete m_timer;
+    delete m_tempReader;
     delete ui;
 }
 
@@ -35,9 +37,9 @@ void MainWindow::init_timer()
     // Bydefault, refresh every 2 minutes
     m_refreshTime = 120;
 
-    timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &MainWindow::timeout_handler);
-    timer->start(m_refreshTime * 1000); // Convert to ms
+    m_timer = new QTimer(this);
+    connect(m_timer, &QTimer::timeout, this, &MainWindow::timeout_handler);
+    m_timer->start(m_refreshTime * 1000); // Convert to ms
 }
 
 void MainWindow::action_quitter()
@@ -50,8 +52,8 @@ void MainWindow::update_refresh()
     m_refreshTime = ui->comboBox_refreshTime->currentText().toInt();
     //qDebug() << m_refreshTime * 1000 << "milli-secondes \n";
 
-    timer->stop();
-    timer->start(m_refreshTime * 1000);
+    m_timer->stop();
+    m_timer->start(m_refreshTime * 1000);
 }
 
 void MainWindow::handle_alarm_activation()

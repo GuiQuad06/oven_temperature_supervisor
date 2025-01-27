@@ -12,6 +12,11 @@ Acquisition::Acquisition(QObject *parent)
     connect(m_acquisitionProcess, &QProcess::readyReadStandardOutput, this, &Acquisition::read_temperature);
 }
 
+Acquisition::~Acquisition()
+{
+   delete m_acquisitionProcess;
+}
+
 acq_error_t Acquisition::start()
 {
     m_acquisitionProcess->start("python", QStringList() << m_scriptPath);

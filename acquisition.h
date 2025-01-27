@@ -14,6 +14,7 @@ class Acquisition : public QObject
     Q_OBJECT
 public:
     explicit Acquisition(QObject *parent = nullptr);
+    ~Acquisition();
     acq_error_t start();
     void read_temperature();
 
