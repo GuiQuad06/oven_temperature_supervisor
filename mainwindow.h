@@ -34,6 +34,7 @@ private slots:
     void action_quitter();
     void update_refresh();
     void handle_alarm_activation();
+    void update_target();
 
 private:
     Ui::MainWindow *ui;
@@ -42,6 +43,8 @@ private:
     QStringList m_listInterval;
     int m_refreshTime;
     int m_tempAlarm;
+    int m_target;
+    int m_temp;
 
     k_alarmMode m_alarmMode;
 

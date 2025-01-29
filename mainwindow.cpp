@@ -6,6 +6,9 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , m_target(0)
+    , m_temp(0)
+    , m_alarmMode(ALARM_OFF)
     , m_tempReader(new Acquisition)
 {
     ui->setupUi(this);
@@ -13,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->setWindowTitle("Monitor Ton Four");
 
     ui->progressBar_temp->reset();
+    ui->progressBar_temp->setMinimum(0);
 
     this->init_timer();
 
@@ -20,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->comboBox_refreshTime, SIGNAL(currentTextChanged(QString)), this, SLOT(update_refresh()));
     connect(ui->checkBox_activerAlerte, SIGNAL(toggled(bool)), this, SLOT(handle_alarm_activation()));
     connect(m_tempReader, &Acquisition::value_updated, this, &MainWindow::update_temperature);
+    connect(ui->lineEdit_temperatureAlarm, SIGNAL(textChanged(QString)), this, SLOT(update_target()));
 }
 
 MainWindow::~MainWindow()
@@ -66,15 +71,34 @@ void MainWindow::handle_alarm_activation()
     }
 }
 
+void MainWindow::update_target()
+{
+    QString str = ui->lineEdit_temperatureAlarm->text();
+    m_target = str.toInt();
+    ui->progressBar_temp->setMaximum(m_target);
+}
+
 void MainWindow::timeout_handler()
 {
     // Step 1: Call le sub process Python pour lire la temperature, refresh label
     m_tempReader->start();
 
     // Step 2: Si Alerte activee, comparer et actualiser progres bar + goNogo status
+    if (ALARM_ON == m_alarmMode) {
+        ui->progressBar_temp->setValue(m_temp);
+        //qDebug() << "Temperature" << m_temp << "Cible" << m_target << '\n';
+        if (m_temp >= m_target) {
+            ui->label_goNogo->setText("READY !!!");
+        }
+    }
+    else {
+        ui->progressBar_temp->reset();
+        ui->label_goNogo->clear();
+    }
 }
 
 void MainWindow::update_temperature(const QString &value)
 {
+    m_temp = value.toInt();
     ui->label_temperature->setText(value + "deg C");
 }
