@@ -12,10 +12,7 @@ class MainWindow;
 }
 QT_END_NAMESPACE
 
-enum k_alarmMode {
-    ALARM_OFF,
-    ALARM_ON
-};
+enum k_alarmMode { ALARM_OFF, ALARM_ON };
 
 class MainWindow : public QMainWindow
 {

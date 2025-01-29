@@ -4,10 +4,7 @@
 #include <QObject>
 #include <QProcess>
 
-typedef enum {
-    NO_ERROR,
-    PYTHON_ERROR
-} acq_error_t;
+typedef enum { NO_ERROR, PYTHON_ERROR } acq_error_t;
 
 class Acquisition : public QObject
 {
@@ -22,7 +19,6 @@ signals:
     void value_updated(const QString &value);
 
 private:
-
     QProcess *m_acquisitionProcess;
     QString m_scriptPath;
 };
